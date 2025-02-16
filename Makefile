@@ -6,3 +6,23 @@ createdb:
 
 dropdb:
 	docker exec -it inkwave dropdb inkwave
+
+migrateup:
+	migrate -path db/migration/ -database "postgresql://test:testsecret@localhost:5432/inkwave?sslmode=disable" -verbose up
+
+migratedown:
+	migrate -path db/migration/ -database "postgresql://test:testsecret@localhost:5432/inkwave?sslmode=disable" -verbose down
+
+new_migrate:
+	@read -p "Enter migration name: " name; \
+		migrate create -ext sql -dir ./db/migration -seq $$name
+
+sqlc:
+	sqlc generate -f ./config/sqlc.yml
+
+test:
+	go test -v -cover ./... 
+
+		
+
+.PHONY:  migrateup, migratedown, new_migrate, sqlc, createdb, dropdb, db
