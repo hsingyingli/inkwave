@@ -1,13 +1,22 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/hsingyingli/inkwave-backend/api"
+	"github.com/hsingyingli/inkwave-backend/pkg/utils"
 )
 
 func main() {
-	app, error := api.NewApp()
+	ctx := context.Background()
+	cfg, error := utils.LoadEnv()
+
+	if error != nil {
+		log.Fatal(error)
+	}
+
+	app, error := api.NewApp(ctx, cfg)
 
 	if error != nil {
 		log.Fatal(error)

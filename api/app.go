@@ -5,19 +5,20 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/hsingyingli/inkwave-backend/api/routes"
-	db "github.com/hsingyingli/inkwave-backend/db/querier"
+	"github.com/hsingyingli/inkwave-backend/pkg/db"
+	"github.com/hsingyingli/inkwave-backend/pkg/utils"
 	"github.com/jackc/pgx/v5"
 )
 
 type App struct {
 	app *fiber.App
 	db  *db.Queries
+	cfg utils.Config
 }
 
-func NewApp() (*App, error) {
-	ctx := context.Background()
+func NewApp(ctx context.Context, cfg utils.Config) (*App, error) {
 	app := fiber.New()
-	conn, err := pgx.Connect(ctx, "user=pqgotest dbname=pqgotest sslmode=verify-full")
+	conn, err := pgx.Connect(ctx, cfg.DB_URL)
 	if err != nil {
 		return nil, err
 	}
@@ -26,17 +27,17 @@ func NewApp() (*App, error) {
 	return &App{
 		app: app,
 		db:  db.New(conn),
+		cfg: cfg,
 	}, nil
 }
 
-func (app *App) Initialize() error {
+func (app *App) Initialize() {
 	// create repository
 
 	// create service
 
 	// route
 	routes.RegisterRoutes(app.app)
-	return nil
 }
 
 func (app *App) Listen(port string) error {
