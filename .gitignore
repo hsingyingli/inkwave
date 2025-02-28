@@ -25,4 +25,6 @@ go.work.sum
 .env
 
 # docker 
-db/data/
+backend/db/data/
+
+backend/config/config.yml

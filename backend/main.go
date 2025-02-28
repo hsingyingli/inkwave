@@ -5,12 +5,12 @@ import (
 	"log"
 
 	"github.com/hsingyingli/inkwave-backend/api"
-	"github.com/hsingyingli/inkwave-backend/pkg/utils"
+	"github.com/hsingyingli/inkwave-backend/pkg/util"
 )
 
 func main() {
 	ctx := context.Background()
-	cfg, error := utils.LoadEnv()
+	cfg, error := util.LoadEnv()
 
 	if error != nil {
 		log.Fatal(error)

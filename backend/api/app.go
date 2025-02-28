@@ -4,19 +4,21 @@ import (
 	"context"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/hsingyingli/inkwave-backend/api/routes"
+	"github.com/hsingyingli/inkwave-backend/api/handler"
+	"github.com/hsingyingli/inkwave-backend/api/middleware"
+	"github.com/hsingyingli/inkwave-backend/api/route"
 	"github.com/hsingyingli/inkwave-backend/pkg/db"
-	"github.com/hsingyingli/inkwave-backend/pkg/utils"
+	"github.com/hsingyingli/inkwave-backend/pkg/util"
 	"github.com/jackc/pgx/v5"
 )
 
 type App struct {
 	app *fiber.App
 	db  *db.Queries
-	cfg utils.Config
+	cfg util.Config
 }
 
-func NewApp(ctx context.Context, cfg utils.Config) (*App, error) {
+func NewApp(ctx context.Context, cfg util.Config) (*App, error) {
 	app := fiber.New()
 	conn, err := pgx.Connect(ctx, cfg.DB_URL)
 	if err != nil {
@@ -36,8 +38,13 @@ func (app *App) Initialize() {
 
 	// create service
 
+	// create handler
+	//
+	handlers := handler.NewHandlers()
+
+	middlewares := middleware.NewMiddlewares()
 	// route
-	routes.RegisterRoutes(app.app)
+	route.RegisterRoutes(app.app, middlewares, handlers)
 }
 
 func (app *App) Listen(port string) error {
