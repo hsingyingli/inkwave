@@ -28,3 +28,5 @@ go.work.sum
 backend/db/data/
 
 backend/config/config.yml
+
+*/node_modules/
