@@ -7,8 +7,10 @@ import (
 )
 
 func RegisterRoutes(app *fiber.App, middlewares *middleware.Middlewares, handlerManager *handler.HandlerManager) {
-	userApi := app.Group("/users")
+	authApi := app.Group("/auth")
 	{
-		userApi.Post("", handlerManager.CreateUser)
+		authApi.Post("/register", handlerManager.CreateUser)
+		authApi.Post("/login", handlerManager.LoginUser)
+		authApi.Post("/renew", handlerManager.RenewAccessToken)
 	}
 }
