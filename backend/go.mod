@@ -1,4 +1,4 @@
-module github.com/hsingyingli/inkwave-backend
+module github.com/hsingyingli/inkwave
 
 go 1.23.4
 

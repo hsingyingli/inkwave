@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/hsingyingli/inkwave-backend/api"
-	"github.com/hsingyingli/inkwave-backend/pkg/util"
+	"github.com/hsingyingli/inkwave/api"
+	"github.com/hsingyingli/inkwave/pkg/util"
 )
 
 func main() {
@@ -18,11 +18,11 @@ func main() {
 
 	app, error := api.NewApp(ctx, cfg)
 
+	defer app.Shutdown()
+
 	if error != nil {
 		log.Fatal(error)
 	}
-
-	app.Initialize()
 
 	error = app.Listen(":3000")
 	if error != nil {

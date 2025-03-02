@@ -1,7 +1,26 @@
 package handler
 
-type Handlers struct{}
+import (
+	"github.com/go-playground/validator/v10"
+	"github.com/gofiber/fiber/v2"
+	"github.com/hsingyingli/inkwave/pkg/service"
+)
 
-func NewHandlers() *Handlers {
-	return &Handlers{}
+type HandlerManager struct {
+	serviceManager *service.ServiceManager
+	validate       *validator.Validate
 }
+
+type Handler interface {
+	CreateUser(ctx *fiber.Ctx) error
+}
+
+func NewHandlers(serviceManager *service.ServiceManager) *HandlerManager {
+	validate := validator.New()
+	return &HandlerManager{
+		serviceManager: serviceManager,
+		validate:       validate,
+	}
+}
+
+var _ Handler = (*HandlerManager)(nil)
